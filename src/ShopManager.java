@@ -96,9 +96,93 @@ public class ShopManager {
 				cust=new Customer(user, pass, brand, price, id, qty);
 				display(cust);
 				break;
+			case 5:
+				cust=new Customer(user, pass, brand, price, id, qty);
+				System.out.println("Enter product id to search in your cart:");
+				int srch=sc.nextInt();
+				search(cust,srch);
 			}
 		} while (ch != 6);
+		cust=new Customer(user, pass, brand, price, id, qty);
+		String ch1="n";
+		boolean bool=false;
+		if(cust.getBrand().isEmpty()) {
+			System.out.println("You cart is Empty!!");
+			System.out.println("Thank you visit again");
+			bool=false;
+		}
+		else {
+			do{
+				bool=true;
+				if(cust.getBrand().isEmpty()) {
+					System.out.println("You cart is Empty!!");
+					System.out.println("Thank you visit again");
+					bool=false;
+					break;
+				}
+				display(cust);
+				System.out.println("Do you want to change quantity of any product? [y/n]:");
+				String ch2=sc.next();
+				if(ch2.equals("Y")||ch2.equals("y")) {
+					System.out.println("Enter the product id:");
+					int se=sc.nextInt();
+					boolean b=false;
+					for(int i=0;i<cust.getBrand().size();i++) {
+						if(cust.getId().get(i)==se) {
+							b=true;
+							System.out.println("\t\t1> Completely remove the item \n\t\t2> Reduce quantity be 1 \n\t\t3> Increase quantity be 1");
+							System.out.println("Enter your choice:");
+							int choice=sc.nextInt();
+							switch(choice) {
+							case 1:
+								cust.getBrand().remove(i);
+								cust.getId().remove(i);
+								cust.getQty().remove(i);
+								cust.getPrice().remove(i);
+								cust.getTotal().remove(i);
+								break;
+							case 2:
+								cust.getQty().set(i, cust.getQty().get(i)-1);
+								cust.getTotal().set(i, cust.getTotal().get(i)-cust.getPrice().get(i));
+								if(cust.getQty().get(i)==0) {
+									cust.getBrand().remove(i);
+									cust.getId().remove(i);
+									cust.getQty().remove(i);
+									cust.getPrice().remove(i);
+									cust.getTotal().remove(i);
+								}
+								break;
+							case 3:
+								cust.getQty().set(i, cust.getQty().get(i)+1);
+								cust.getTotal().set(i, cust.getTotal().get(i)+cust.getPrice().get(i));
+								break;
+							}
+						}
+					}
+					if(!b) {
+						System.out.println("This Product is not present in your cart!!!!");
+					}
+				}
+				display(cust);
+				System.out.println("Do you want to finalise the list? [y/n] :");
+				ch1=sc.next();
+			}while(ch1.equals("N")||ch1.equals("n"));
+		}
 		return cust;
+	}
+	public void search(Customer cust,int srch) {
+		boolean b=false;
+		for(int i=0;i<cust.getBrand().size();i++) {
+			if(srch==cust.getId().get(i)) {
+				b=true;
+				System.out.println("\nProduct ID \t Product Name \t\t\t\t\t\t Price  \tQuantity \t Cgst \t Sgst \t Total");
+				System.out.println("\n----------------------------------------------------------------------------------------------------------------------\n");
+				System.out.println(cust.getId().get(i) + " \t\t " + cust.getBrand().get(i) + " \t\t " + cust.getPrice().get(i)+"\t\t"+cust.getQty().get(i)+"\t\t"+cust.getCgst()+"\t"+cust.getSgst()+"\t"+cust.getTotal().get(i));	
+			}
+		}
+		if(!b) {
+			System.out.println("This product is not in your cart. Take a look on exclusive offers on the product!!");
+		}
 	}
 	public void display(Customer cust) {
 		double finalTotal=0;

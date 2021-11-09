@@ -24,7 +24,6 @@ public class Customer {
 			finaltotal+=total.get(i);
 		}
 	}
-	
 	public float getCgst() {
 		return cgst;
 	}
