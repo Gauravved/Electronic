@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class ShopManager {
+	Scanner sc = new Scanner(System.in);
 	public Customer create() {
-		Scanner sc = new Scanner(System.in);
 		Products pr = new Products();
 		Customer cust = null;
 		System.out.println("Enter username:");
@@ -103,6 +103,7 @@ public class ShopManager {
 				search(cust,srch);
 			}
 		} while (ch != 6);
+		
 		cust=new Customer(user, pass, brand, price, id, qty);
 		String ch1="n";
 		boolean bool=false;
@@ -168,8 +169,52 @@ public class ShopManager {
 				ch1=sc.next();
 			}while(ch1.equals("N")||ch1.equals("n"));
 		}
+		Payment();
 		return cust;
 	}
+	
+	public void Payment() {
+		int choose,bank;
+		String card,otp;
+		System.out.println("\nPayment Options:\n\t1> Online payment \n\t2> Cash on delivery \nChoose your payment method:");
+		choose=sc.nextInt();
+		switch(choose)
+		{
+			case 1:
+				System.out.println("\n\n1> State Bank of India \n2> Bank of Baroda \n3> Punjab National Bank \n4> Bank of India \n5> Canara Bank \n6> Union Bank of India \n7> IDBI Bank \n8> Indian Bank \n9> Central Bank of India \n10> Syndicate Bank \n11> Axis Bank \nChoose the Bank for Payment:");
+				bank=sc.nextInt();
+				System.out.println("\nEnter your 12 Digit Debit Card Number:");
+				card=sc.next();
+		    	while(card.length()!=12)
+				{
+	       			System.out.println("Incorrect Debit card number!!");
+					System.out.println("\nRe-Enter the Debit card Number:");
+					card=sc.next();
+				}
+		    	
+				System.out.println("Enter the sent OTP sent to your rgistered mobile number :");
+				otp=sc.next();
+				System.out.println("Processing");
+				for(int i=0;i<3;i++)
+				{
+					System.out.println(".");
+					//Sleep(1000);
+				}
+				System.out.println("\nTransaction Done. You order will arrive in 1-2 Weeks");
+				break;
+			case 2:
+				System.out.println("You have choosen Cash on delivery. Your order will arrive in 1- 2 Weeks");
+				break;
+			default:
+				System.out.println("Choice a Valid Payment option");
+		}
+		
+		
+	}
+	
+	
+	
+	
 	public void search(Customer cust,int srch) {
 		boolean b=false;
 		for(int i=0;i<cust.getBrand().size();i++) {
